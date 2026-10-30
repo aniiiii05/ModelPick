@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { createLimiter } from "@/lib/rateLimit";
 
 beforeAll(() => {
-  delete process.env.ANTHROPIC_API_KEY;
+  for (const k of ["ANTHROPIC_API_KEY", "GOOGLE_GENERATIVE_AI_API_KEY", "GEMINI_API_KEY", "OPENAI_API_KEY", "EXTRACTOR_API_KEY", "EXTRACTOR_PROVIDER"]) delete process.env[k];
 });
 
 // Each request gets its own address so the rate limiter does not interfere, except in its own test.
@@ -88,7 +88,7 @@ describe("POST /api/recommend", () => {
 
   it("never returns an answer to the prompt, only a prescription", async () => {
     const r = await post({ prompt: "What is 2 + 2? Reply with only the number." });
-    expect(Object.keys(r.json).sort()).toEqual(["best", "budget", "caveat", "features", "plan", "reason", "runnerUp", "source"]);
+    expect(Object.keys(r.json).sort()).toEqual(["best", "budget", "caveat", "features", "plan", "reader", "reason", "runnerUp", "source"]);
   });
 
   it("limits a single client to 20 requests a minute", async () => {

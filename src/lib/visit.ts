@@ -31,6 +31,7 @@ export const VisitSchema = z.object({
     reason: z.string(),
     features: FeaturesSchema,
     source: z.enum(["llm", "classifier"]),
+    reader: z.string().max(60).optional(),
     caveat: z.string().nullable().optional(),
   }),
 });

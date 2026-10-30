@@ -229,11 +229,12 @@ export default function Home() {
             <ExamDiagram />
           </div>
           <p className="mt-10 max-w-[75ch] text-sm text-ink-3">
-            Two readers can take the exam, both measured on real user prompts from LMArena. With an Anthropic key, Claude
-            Haiku 5.5 reads each prompt against the same rubric its training labels follow; in a 300-prompt check, a Haiku
-            labeller matched the reference labels {pct(LLM_EVAL.haikuTaskAgreement)} of the time (
+            Two kinds of reader can take the exam, both measured on real user prompts from LMArena. When an AI provider
+            is configured (Anthropic, Google Gemini, OpenAI or any OpenAI-compatible API), that model reads each prompt
+            against the same rubric the training labels follow; in a 300-prompt check, a Claude Haiku labeller matched the
+            reference labels {pct(LLM_EVAL.haikuTaskAgreement)} of the time (
             {pct(LLM_EVAL.haikuTaskAgreementOnUnambiguous)} on prompts two reference labellers agreed on, against{" "}
-            {pct(LLM_EVAL.secondLabellerTaskAgreement)} agreement between those labellers). Without a key, an offline
+            {pct(LLM_EVAL.secondLabellerTaskAgreement)} agreement between those labellers). Without one, an offline
             classifier trained on {(METRICS.handPrompts + METRICS.externalPrompts).toLocaleString("en-US")} labelled prompts
             reads it: {pct(METRICS.taskAccuracyRealWorld)} on held-out real prompts and {pct(METRICS.taskAccuracy)} on
             ModelPick&apos;s own test prompts, with difficulty within one step {pct(METRICS.complexityWithin1)} of the time.

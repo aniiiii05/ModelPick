@@ -4,7 +4,13 @@ import { useRef, useState, type CSSProperties, type PointerEvent, type ReactNode
 import type { Features, PickedModel, Recommendation } from "@/lib/types";
 import { CheckIcon, CopyIcon } from "./icons";
 
-export type ExamResult = Recommendation & { features: Features; source: "llm" | "classifier"; caveat?: string | null };
+export type ExamResult = Recommendation & {
+  features: Features;
+  source: "llm" | "classifier";
+  /** The model that read the prompt; absent on prescriptions saved by older versions. */
+  reader?: string;
+  caveat?: string | null;
+};
 
 const price = (usd: number) => (usd === 0 ? "Free" : `$${usd}/mo`);
 
@@ -184,7 +190,7 @@ export function Prescription({ result, no, date, onNew }: { result: ExamResult; 
           <div className="min-w-[12rem]">
             <p className="display border-b border-paper-ink/60 pb-0.5 text-[0.95rem]">ModelPick</p>
             <p className="mt-1 text-[0.75rem] text-paper-muted">
-              Prescriber · {result.source === "llm" ? "read by Claude Haiku 5.5" : "read by the offline classifier"} · scores are estimates
+              Prescriber · read by {result.reader ?? (result.source === "llm" ? "an AI reader" : "the offline classifier")} · scores are estimates
             </p>
           </div>
           <div className="flex gap-2">

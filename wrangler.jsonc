@@ -20,10 +20,8 @@
       "service": "modelpick"
     }
   ],
-  // Non-secret config. Set ANTHROPIC_API_KEY as a secret, never here.
-  "vars": {
-    "EXTRACTOR_MODEL": "claude-haiku-5-5"
-  },
+  // No vars: the AI reader is configured in the Cloudflare dashboard (see .env.example). Put
+  // EXTRACTOR_PROVIDER / EXTRACTOR_MODEL there as plain variables and API keys as Secrets.
   "observability": {
     "enabled": true
   }

@@ -4,7 +4,7 @@ import { VisitSchema } from "@/lib/visit";
 
 beforeAll(() => {
   // These tests cover the offline path; never call a real model from the test suite.
-  delete process.env.ANTHROPIC_API_KEY;
+  for (const k of ["ANTHROPIC_API_KEY", "GOOGLE_GENERATIVE_AI_API_KEY", "GEMINI_API_KEY", "OPENAI_API_KEY", "EXTRACTOR_API_KEY", "EXTRACTOR_PROVIDER"]) delete process.env[k];
 });
 
 describe("cleanPrompt", () => {

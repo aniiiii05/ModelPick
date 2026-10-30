@@ -1,7 +1,7 @@
-import { anthropic } from "@ai-sdk/anthropic";
-import { generateObject } from "ai";
+import { generateText, Output } from "ai";
 import classifier from "@/data/classifier.json";
 import { complexityFeatures, nbExpected, predictComplexity, predictTaskWith, type LRModel, type NBModel, type TaskKind } from "./nb";
+import { languageModel, readerLabel, resolveReader } from "./llm";
 import { FeaturesSchema, type Features, type TaskType } from "./types";
 
 const SYSTEM = `You classify prompts so a router can pick the best AI model for them.
@@ -29,6 +29,8 @@ Requests to build, create or design an application, website, platform or SaaS ar
 export type ExtractResult = {
   features: Features;
   source: "llm" | "classifier";
+  /** Which model read the prompt, for the prescription footer: an LLM id, or "offline classifier". */
+  reader: string;
   /** Shown with the prescription when the read is less reliable than usual. */
   caveat: string | null;
 };
@@ -69,19 +71,35 @@ export function cleanSummary(summary: string, taskType: TaskType): string {
   return s && plain && !linkOrNumber ? s : `${taskType} task`;
 }
 
+// Resolved once per isolate; a half-finished setup is reported once rather than on every request.
+let reader: ReturnType<typeof resolveReader> | undefined;
+function configuredReader() {
+  if (!reader) {
+    reader = resolveReader();
+    if (reader.problem) console.warn(`AI reader not used: ${reader.problem} Falling back to the offline classifier.`);
+  }
+  return reader.config;
+}
+
 export async function extractFeatures(prompt: string): Promise<ExtractResult> {
-  if (process.env.ANTHROPIC_API_KEY) {
+  const config = configuredReader();
+  if (config) {
     try {
-      const { object } = await generateObject({
-        model: anthropic(process.env.EXTRACTOR_MODEL ?? "claude-haiku-5-5"),
-        schema: FeaturesSchema,
+      const { output: object } = await generateText({
+        model: languageModel(config),
+        output: Output.object({ schema: FeaturesSchema, name: "prompt_features" }),
         system: SYSTEM,
         // The prompt cannot close its own wrapper and smuggle text outside it.
         prompt: `<prompt>\n${prompt.replace(/<\/?prompt>/gi, "")}\n</prompt>`,
         maxRetries: 1,
         abortSignal: AbortSignal.timeout(LLM_TIMEOUT_MS),
       });
-      return { features: { ...object, summary: cleanSummary(object.summary, object.taskType) }, source: "llm", caveat: null };
+      return {
+        features: { ...object, summary: cleanSummary(object.summary, object.taskType) },
+        source: "llm",
+        reader: readerLabel(config),
+        caveat: null,
+      };
     } catch (err) {
       // Name and message only: SDK errors carry the request body, which is the visitor's prompt.
       console.error("LLM extraction failed, falling back to classifier:", err instanceof Error ? `${err.name}: ${err.message}` : "unknown error");
@@ -91,7 +109,7 @@ export async function extractFeatures(prompt: string): Promise<ExtractResult> {
     nonLatinShare(prompt) > 0.5
       ? "The offline reader was trained on English prompts, so this read is a rough one."
       : null;
-  return { features: classifierFeatures(prompt), source: "classifier", caveat };
+  return { features: classifierFeatures(prompt), source: "classifier", reader: "offline classifier", caveat };
 }
 
 const taskKind = classifier.taskKind as TaskKind;

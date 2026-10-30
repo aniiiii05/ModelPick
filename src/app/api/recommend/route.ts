@@ -46,8 +46,8 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { features, source, caveat } = await extractFeatures(prompt);
-    return NextResponse.json({ ...recommend(features), features, source, caveat }, { headers: { "Cache-Control": "no-store" } });
+    const { features, source, reader, caveat } = await extractFeatures(prompt);
+    return NextResponse.json({ ...recommend(features), features, source, reader, caveat }, { headers: { "Cache-Control": "no-store" } });
   } catch (err) {
     // Name and message only: SDK errors carry the request body, which is the visitor's prompt.
     console.error("Recommendation failed:", err instanceof Error ? `${err.name}: ${err.message}` : "unknown error");
