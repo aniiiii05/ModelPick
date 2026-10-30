@@ -1,0 +1,9 @@
+{
+  "note": "300 real LMArena prompts, labelled independently by three Claude labellers given the rubric in src/lib/extract.ts. Reference = the labeller whose labels are in silver.json.",
+  "prompts": 300,
+  "secondLabellerTaskAgreement": 0.903,
+  "haikuTaskAgreement": 0.85,
+  "haikuTaskAgreementOnUnambiguous": 0.9,
+  "unambiguousPrompts": 271,
+  "haikuComplexityWithin1": 1.0
+}

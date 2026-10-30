@@ -1,26 +1,267 @@
 @import "tailwindcss";
 
+/* ── Exam room, lights on ─────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ground: #eef2f3;
+  --ground-2: #e2e9eb;
+  --ink: #0e1416;
+  --ink-2: #3f5056;
+  --ink-3: #56666c;
+  --rule: #c5d0d3;
+  --field: #ffffff;
+  --teal: #0d5c63;
+  --teal-hover: #094a50;
+  --on-teal: #ffffff;
+  --steel: #262d31;
+  --steel-2: #3a4348;
+  --selection: #f3c4c4;
+
+  /* The chart and the slip are lit objects: they keep their colours in both rooms. */
+  --duo-red: #e04848;
+  --duo-green: #3e9b63;
+  --chart-ink: #0b0b0b;
+  --paper: #ffffff;
+  --paper-ink: #121618;
+  --paper-muted: #4e5a5f;
+  --paper-rule: #d5dcde;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
+}
+
+/* ── Lights dimmed ────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0d1214;
+    --ground-2: #151c1f;
+    --ink: #e7edef;
+    --ink-2: #b1bec2;
+    --ink-3: #93a2a7;
+    --rule: #2b363a;
+    --field: #121a1d;
+    --teal: #63bcc4;
+    --teal-hover: #82cdd3;
+    --on-teal: #062a2d;
+    --steel: #3a4448;
+    --steel-2: #4c575c;
+    --selection: #5b2a2a;
+    --duo-red: #d63f3f;
+    --duo-green: #36905a;
+    --paper: #f4f7f8;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #0d1214;
+  --ground-2: #151c1f;
+  --ink: #e7edef;
+  --ink-2: #b1bec2;
+  --ink-3: #93a2a7;
+  --rule: #2b363a;
+  --field: #121a1d;
+  --teal: #63bcc4;
+  --teal-hover: #82cdd3;
+  --on-teal: #062a2d;
+  --steel: #3a4448;
+  --steel-2: #4c575c;
+  --selection: #5b2a2a;
+  --duo-red: #d63f3f;
+  --duo-green: #36905a;
+  --paper: #f4f7f8;
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ground: var(--ground);
+  --color-ground-2: var(--ground-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rule: var(--rule);
+  --color-field: var(--field);
+  --color-teal: var(--teal);
+  --color-teal-hover: var(--teal-hover);
+  --color-on-teal: var(--on-teal);
+  --color-steel: var(--steel);
+  --color-paper: var(--paper);
+  --color-paper-ink: var(--paper-ink);
+  --color-paper-muted: var(--paper-muted);
+  --color-paper-rule: var(--paper-rule);
+  --font-sans: var(--font-hanken), system-ui, sans-serif;
+  --font-chart: var(--font-archivo), system-ui, sans-serif;
+  --font-rx: var(--font-rx), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 1.5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-hanken), system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 500ms var(--ease-out), color 500ms var(--ease-out);
+}
+
+::selection {
+  background: var(--selection);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+textarea {
+  caret-color: var(--duo-red);
+}
+
+* {
+  scrollbar-color: var(--steel-2) transparent;
+  scrollbar-width: thin;
+}
+
+a {
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+}
+
+.chart-letters {
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-variation-settings: "wdth" 125;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1;
+}
+
+.display {
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-variation-settings: "wdth" 112;
+  font-weight: 750;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── The chart is a lit object ────────────────────────────── */
+.chart-panel {
+  background: linear-gradient(90deg, var(--duo-red) 50%, var(--duo-green) 50%);
+}
+/* Backlight: brighter at the centre of each half, falling off toward the bezel. */
+.chart-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 45% 70% at 25% 50%, rgb(255 255 255 / var(--backlight)), transparent 72%),
+    radial-gradient(ellipse 45% 70% at 75% 50%, rgb(255 255 255 / var(--backlight)), transparent 72%);
+  box-shadow: inset 0 0 36px rgb(0 0 0 / 0.28);
+}
+.chart-spill {
+  position: absolute;
+  z-index: -1;
+  left: 10%;
+  right: 10%;
+  top: 55%;
+  height: 70%;
+  background: linear-gradient(90deg, var(--duo-red) 50%, var(--duo-green) 50%);
+  filter: blur(70px);
+  transform: translateY(48px);
+  opacity: var(--spill);
+  transition: opacity 700ms var(--ease-out);
+  pointer-events: none;
+}
+:root {
+  --backlight: 0.12;
+  --spill: 0;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --backlight: 0.2;
+    --spill: 0.32;
+  }
+}
+:root[data-theme="dark"] {
+  --backlight: 0.2;
+  --spill: 0.32;
+}
+
+/* ── Signature: the chart focuses ─────────────────────────── */
+.chart-row {
+  /* Blur in em so small rows stay legible at phone sizes. */
+  filter: blur(calc(var(--acuity) * (1 - var(--focus, 0)) * 1em));
+  transition: filter 900ms var(--ease-out);
+}
+
+/* ── The trial lens over the chart ─────────────────────────── */
+/* What the lens shows: a sharp, magnified copy of the chart, cut to the lens aperture. */
+.lens-view {
+  clip-path: circle(var(--lr, 0px) at var(--lx, 50%) var(--ly, 50%));
+  transition: opacity 600ms var(--ease-out);
+}
+.lens-mag {
+  transform-origin: var(--lx, 50%) var(--ly, 50%);
+  transform: scale(1.14);
+}
+
+/* ── The prescription prints ──────────────────────────────── */
+@keyframes slip-print {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(-14px);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
+}
+@keyframes field-ink {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+.slip {
+  animation: slip-print 1100ms var(--ease-out) both;
+  /* Perforated tear-off edge along the top. */
+  -webkit-mask: radial-gradient(circle 5px at 9px 0, transparent 98%, #000) top left / 18px 100% repeat-x;
+  mask: radial-gradient(circle 5px at 9px 0, transparent 98%, #000) top left / 18px 100% repeat-x;
+}
+.slip-field {
+  animation: field-ink 600ms var(--ease-out) both;
+  animation-delay: calc(350ms + var(--i, 0) * 90ms);
+}
+
+@keyframes lens-hunt {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg); }
+}
+.hunting {
+  animation: lens-hunt 1.2s var(--ease-out) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .chart-row,
+  body {
+    transition: none;
+  }
+  .slip,
+  .slip-field,
+  .hunting {
+    animation: none;
+  }
 }
