@@ -1,22 +1,23 @@
 # Surface brief: home (`src/app/page.tsx`)
 
-Scope: the single public page. Introduction and the working tool on one surface.
-Visitor mode: Persuade for the opening (the action is the working prompt box), Operate for the result and the lens case.
-Audience: hackathon judges first (a 2-minute demo), then everyday AI users who should come back.
-Memorable moment: the eye chart pulls into focus as you type, then the prescription slip prints.
+Scope: the whole app, one route. The working tool, the models list, recent history and a short method note.
+Visitor mode: Operate. The visitor came to get one answer: which model, at what effort, on which plan.
+Audience: hackathon judges (a two-minute demo) and everyday AI users choosing between ChatGPT, Claude, Gemini and the rest.
+Replaces: the "Exam Room" eye-chart world, which the owner judged a college project: long, themed, decorated.
+Memorable moment: the answer itself, clear enough to act on in one read.
 
 ## Direction contract
 
-THESIS: Choosing a model is fitting lenses: the right strength for the job, no stronger. The page is an optician's exam, not an AI landing page. It refuses the category default of a dark gradient, a glowing prompt box and three feature cards.
+THESIS: A production AI tool that looks like the products it recommends. One screen, the category's own grammar (sidebar, centred composer, answer in place), executed with the precision of ChatGPT, Perplexity and Gemini. It refuses the themed landing page, scroll-length explainers, decorative 3D and metaphor copy.
 
-OWN-WORLD: A lit duochrome test panel (red and green halves, black letters) on a cool exam-room grey ground; deep exam-chair teal for actions; steel lens rims; white prescription paper with a perforated edge. Archivo at expanded width for chart letters, Hanken Grotesk for reading, Red Hat Mono only for prescription data. Dark mode is "lights dimmed": a dark room with the chart still lit.
+OWN-WORLD: Neutral greys with a near-black primary action (white in dark mode), one quiet teal accent for selection and score bars, hairline borders, 12–24px radii, no gradients, no glow. Geist Sans for everything; Geist Mono only for figures in the Models table, while prices inside answer sentences use tabular Geist Sans. Follows the system theme; a toggle overrides.
 
-STORY: A visitor sees a chart asking "Which model should I use for this prompt?" and understands the product in one read. They type, the chart sharpens, and they receive a prescription: model, effort, plan, spare pair. They browse the trial lens case, and their past prescriptions stay in their file.
+STORY: The visitor reads one question, pastes a prompt or taps a sample, and sees the recommendation as an answer block: the model, its effort setting, which plan covers it, a cheaper option and an alternative. Past answers sit in the sidebar; the Models view lists the catalog; "How it works" states the method and measured accuracy in a few lines.
 
-FIRST VIEWPORT: Header (wordmark, How it works, Lens case, Your file, Lights switch). A full-width duochrome panel with four chart rows in descending size (WHICH / MODEL / SHOULD I USE / FOR THIS PROMPT?) and acuity labels at the left. Below it, a one-line intro and the intake form (textarea, sample-prompt chips, a teal "Get my prescription" button) visible without scrolling at 1440×900.
+FIRST VIEWPORT: Left sidebar 260px (wordmark, New, Models, Recent list, How it works and theme toggle at the foot). Main column centred at 720px: the question "Which AI model should you use?" at 28–32px semibold, one sentence beneath, the composer (rounded, textarea, send button bottom-right), four sample chips. All visible at 1280×720 and 390×844; on mobile the sidebar becomes a top bar with a menu.
 
-FORM: Optician's exam: duochrome chart plus prescription slip, first on the ordered list. seed: none (concept-seed not run: the skill's engine binary was deliberately not executed; the user chose this direction from three presented options in a structured question)
+FORM: The category standard, played straight; owner-pinned ("clean like Google, Apple, ChatGPT, Gemini"), so no direction roll was run (the skill's engine binary is not executed in this project). seed: none (roll not run; owner-pinned)
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 
-Signature interaction: chart rows blur by acuity and sharpen with typing progress, snapping to full focus when the result lands; the slip prints by clip-path reveal with staggered fields. Motion: exponential ease-out, nothing hidden by default, reduced motion respected.
+Signature interaction: the answer replaces the empty state in place, the prompt shown as a sent message above it and the composer docked below, as in a chat; a skeleton holds the answer's shape while it loads. Motion 150–200ms, state only.

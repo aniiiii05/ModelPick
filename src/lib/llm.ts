@@ -88,7 +88,7 @@ export function languageModel(c: ReaderConfig): LanguageModel {
   }
 }
 
-/** A short, safe label for the prescription footer: the model id only, never the key or URL. */
+/** A short, safe label for the answer footer: the model id only, never the key or URL. */
 export function readerLabel(c: ReaderConfig): string {
   return c.model.replace(/[^\w.:/-]/g, "").slice(0, 60);
 }

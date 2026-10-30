@@ -33,18 +33,6 @@ With an AI provider configured, that model reads prompts with the same rubric th
 
 Examples: Gemini only needs `GEMINI_API_KEY`. OpenRouter: `EXTRACTOR_PROVIDER=openai-compatible`, `EXTRACTOR_BASE_URL=https://openrouter.ai/api/v1`, `EXTRACTOR_API_KEY=...`, `EXTRACTOR_MODEL=<an OpenRouter model id>`. A half-finished setup logs one warning and the app falls back to the offline classifier. The chosen model must support structured (JSON schema) output.
 
-## The film
-
-The stop-motion loop in "How the exam works" is a Remotion project in `exam-film/` (its own `package.json`). Preview with `npm run dev` there; re-render into `public/film/` with:
-
-```bash
-npx remotion render ExamLoop ../public/film/exam.mp4 --codec=h264 --crf=26
-npx remotion render ExamLoop ../public/film/exam.webm --codec=vp9 --crf=36
-npx remotion still ExamLoop ../public/film/exam-poster.jpg --frame=200 --image-format=jpeg
-```
-
-Remotion is free for individuals and companies of up to three people; larger companies need a license (remotion.pro/license).
-
 ## Security notes for deployment
 
 The app limits each client to 20 requests a minute, keyed on Cloudflare's `cf-connecting-ip` (a client can't forge it; `X-Forwarded-For` can be). That count lives in memory per Worker isolate, so it caps bursts but is not a global quota. When an AI provider is configured, also:

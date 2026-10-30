@@ -1,25 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Hanken_Grotesk, Red_Hat_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const archivo = Archivo({ variable: "--font-archivo", subsets: ["latin"], axes: ["wdth"] });
-const hanken = Hanken_Grotesk({ variable: "--font-hanken", subsets: ["latin"] });
-const mono = Red_Hat_Mono({ variable: "--font-rx", subsets: ["latin"] });
+const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ModelPick · An eye exam for your prompts",
+  title: "ModelPick: which AI model should you use?",
   description:
-    "Paste any prompt. ModelPick prescribes the AI model, effort level and subscription that fit it, across 18 models from 12 labs.",
+    "Paste a prompt. ModelPick recommends the AI model, effort setting and subscription for it, across 18 models from 12 labs. It never answers the prompt.",
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#eef2f3" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d1214" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#212121" },
   ],
 };
 
-// Applies the saved "lights" preference before paint so there is no theme flash.
+// Applies a saved theme choice before paint so there is no flash.
 const themeScript = `try{var t=localStorage.getItem("mp-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -28,7 +27,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${archivo.variable} ${hanken.variable} ${mono.variable}`}>{children}</body>
+      <body className={`${geist.variable} ${geistMono.variable}`}>{children}</body>
     </html>
   );
 }

@@ -8,7 +8,7 @@ A web tool where people paste an AI prompt and get back which model to use for i
 - **Ongoing:** students, developers and professionals choosing between, or already paying for, ChatGPT, Claude, Gemini, Grok, Perplexity, DeepSeek and others, who want to stop guessing which model and effort setting fits a task.
 
 ## Mechanism
-1. The prompt is classified into a task type, a complexity from 1 to 5, and needs (live web, vision, long context, speed). An LLM does this when an API key is set; otherwise a classifier trained on labelled prompts does it.
+1. The prompt is classified into a task type, a complexity from 1 to 5, and needs (live web, vision, long context, speed). A configured LLM does this (Anthropic, Google, OpenAI or any OpenAI-compatible API); otherwise a classifier trained on labelled prompts does it.
 2. A deterministic scorer ranks the model catalog. Hard tasks favour quality; easy tasks favour speed and cost.
 3. The output: the best model and its effort level, a budget pick, a runner-up, and plan advice (cheapest plan for this one task, plan for regular use, best free option).
 
@@ -21,4 +21,7 @@ A web tool where people paste an AI prompt and get back which model to use for i
 web
 
 ## Stack
-Next.js 16 (App Router), TypeScript, Tailwind CSS v4, Vercel AI SDK. Deploy target: Vercel.
+Next.js 16 (App Router), TypeScript, Tailwind CSS v4, Vercel AI SDK. Deploy target: Cloudflare Workers (OpenNext).
+
+## Brand commitments
+- Look and behave like a production AI product (ChatGPT, Perplexity, Gemini, Google, Apple): clean, neutral, familiar app shell, compact. No themed metaphors, decorative 3D, long explainer sections or playful copy. (Owner, Oct 2026, replacing the "Exam Room" eye-chart design.)

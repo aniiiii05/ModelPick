@@ -1,7 +1,7 @@
 "use client";
 
+import { Moon, Sun } from "lucide-react";
 import { useSyncExternalStore } from "react";
-import { BulbIcon } from "./icons";
 
 function isDark() {
   const set = document.documentElement.dataset.theme;
@@ -20,8 +20,8 @@ function subscribe(cb: () => void) {
   };
 }
 
-/** "Dim the lights": the exam room's dark mode. */
-export function LightsSwitch() {
+/** Follows the system theme until the visitor picks one. */
+export function ThemeToggle({ withLabel = false }: { withLabel?: boolean }) {
   const dark = useSyncExternalStore(subscribe, isDark, () => false);
 
   function toggle() {
@@ -30,20 +30,22 @@ export function LightsSwitch() {
     try {
       localStorage.setItem("mp-theme", next);
     } catch {
-      // Preference just won't persist.
+      // The choice just won't persist.
     }
   }
 
+  const label = dark ? "Light theme" : "Dark theme";
   return (
     <button
       type="button"
       onClick={toggle}
-      aria-pressed={dark}
-      aria-label={dark ? "Turn the lights on" : "Dim the lights"}
-      className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-rule px-2.5 py-1.5 text-sm text-ink-2 transition-colors hover:border-ink-3 hover:text-ink sm:px-3"
+      aria-label={withLabel ? undefined : label}
+      className={`inline-flex h-9 items-center gap-2.5 rounded-lg text-[14px] text-fg transition-colors hover:bg-hover ${
+        withLabel ? "w-full px-2.5" : "w-9 justify-center"
+      }`}
     >
-      <BulbIcon on={!dark} size={18} />
-      <span className="hidden sm:inline">{dark ? "Lights on" : "Dim lights"}</span>
+      {dark ? <Sun size={17} aria-hidden /> : <Moon size={17} aria-hidden />}
+      {withLabel && label}
     </button>
   );
 }

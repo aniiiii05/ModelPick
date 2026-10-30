@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { FeaturesSchema } from "./types";
+import { FeaturesSchema, type Features, type Recommendation } from "./types";
 
 /**
- * A saved prescription, as read back from localStorage. Storage can hold entries from older versions
+ * A saved recommendation, as read back from localStorage. Storage can hold entries from older versions
  * or ones edited by hand, so every field the page renders is checked before it is trusted.
  */
 const Picked = z.object({
@@ -35,3 +35,36 @@ export const VisitSchema = z.object({
     caveat: z.string().nullable().optional(),
   }),
 });
+
+/** What the API returns for one prompt. */
+export type Result = Recommendation & {
+  features: Features;
+  source: "llm" | "classifier";
+  /** The model that read the prompt; absent on results saved by older versions. */
+  reader?: string;
+  caveat?: string | null;
+};
+
+/** One recommendation in the visitor's history. */
+export type Visit = { no: number; date: string; prompt: string; result: Result };
+
+const KEY = "mp-file";
+export const HISTORY_LIMIT = 20;
+
+/** Saved history, keeping only entries that still render (older versions or hand edits are dropped). */
+export function readHistory(): Visit[] {
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY) ?? "[]");
+    return Array.isArray(raw) ? raw.flatMap((v) => (VisitSchema.safeParse(v).success ? [v as Visit] : [])).slice(0, HISTORY_LIMIT) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function writeHistory(visits: Visit[]) {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(visits.slice(0, HISTORY_LIMIT)));
+  } catch {
+    // Storage unavailable (private mode, blocked): history just won't persist.
+  }
+}

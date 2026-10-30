@@ -29,9 +29,9 @@ Requests to build, create or design an application, website, platform or SaaS ar
 export type ExtractResult = {
   features: Features;
   source: "llm" | "classifier";
-  /** Which model read the prompt, for the prescription footer: an LLM id, or "offline classifier". */
+  /** Which model read the prompt, for the answer footer: an LLM id, or "offline classifier". */
   reader: string;
-  /** Shown with the prescription when the read is less reliable than usual. */
+  /** Shown with the answer when the read is less reliable than usual. */
   caveat: string | null;
 };
 
@@ -61,7 +61,7 @@ function nonLatinShare(prompt: string): number {
 }
 
 /**
- * The summary is model output shown to the visitor and copied with the prescription. A prompt can try
+ * The summary is model output shown to the visitor and copied with the answer. A prompt can try
  * to steer it, so keep it to plain words: no links or domains, no phone numbers, no markup or symbols.
  */
 export function cleanSummary(summary: string, taskType: TaskType): string {

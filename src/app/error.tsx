@@ -1,6 +1,6 @@
 "use client";
 
-/** If rendering fails (say, an unexpected saved visit), offer a way back instead of a blank page. */
+/** If rendering fails (say, an unexpected saved entry), offer a way back instead of a blank page. */
 export default function Error({ reset }: { error: Error; reset: () => void }) {
   function clearAndRetry() {
     try {
@@ -12,18 +12,18 @@ export default function Error({ reset }: { error: Error; reset: () => void }) {
   }
 
   return (
-    <main className="mx-auto max-w-[60ch] px-4 py-24 text-center sm:px-6">
-      <h1 className="display text-[clamp(2rem,4.5vw,3.25rem)]">The exam room went dark</h1>
-      <p className="mt-4 text-ink-2">
-        Something on this page failed to load. Clearing your saved prescriptions usually fixes it.
-      </p>
-      <button
-        type="button"
-        onClick={clearAndRetry}
-        className="mt-8 inline-flex items-center rounded-xl bg-teal px-5 py-3 font-semibold text-on-teal hover:bg-teal-hover"
-      >
-        Clear my file and reload
-      </button>
+    <main className="grid min-h-dvh place-items-center px-4">
+      <div className="max-w-[44ch] text-center">
+        <h1 className="text-[22px] font-semibold tracking-[-0.01em]">Something went wrong</h1>
+        <p className="mt-2 text-[15px] text-fg-2">Part of the page failed to load. Clearing your saved history usually fixes it.</p>
+        <button
+          type="button"
+          onClick={clearAndRetry}
+          className="mt-6 inline-flex h-10 items-center rounded-full bg-primary px-5 text-[14px] font-medium text-on-primary hover:opacity-85"
+        >
+          Clear history and reload
+        </button>
+      </div>
     </main>
   );
 }
