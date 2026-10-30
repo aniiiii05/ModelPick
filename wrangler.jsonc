@@ -1,0 +1,30 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "modelpick",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": [
+    // Node.js APIs for the Next.js server runtime.
+    "nodejs_compat",
+    // fetch() may only reach public addresses.
+    "global_fetch_strictly_public"
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      // Used by OpenNext for cache revalidation; must match "name" above.
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "modelpick"
+    }
+  ],
+  // Non-secret config. Set ANTHROPIC_API_KEY as a secret, never here.
+  "vars": {
+    "EXTRACTOR_MODEL": "claude-haiku-5-5"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

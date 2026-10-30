@@ -57,6 +57,22 @@ cp .env.example .env.local   # optionally add ANTHROPIC_API_KEY
 npm run dev
 ```
 
-## Deploy
+## Deploy to Cloudflare
 
-Push to GitHub, import the repo on Vercel, and add `ANTHROPIC_API_KEY` in Project → Settings → Environment Variables.
+The app runs on Cloudflare Workers through the OpenNext adapter (`@opennextjs/cloudflare`). Config lives in `wrangler.jsonc` (Worker name `modelpick`) and `open-next.config.ts`.
+
+1. In the Cloudflare dashboard go to **Workers & Pages → Create → Import a repository**, connect GitHub and pick `aniiiii05/ModelPick`.
+2. Set the commands:
+   - Build command: `npx opennextjs-cloudflare build`
+   - Deploy command: `npx opennextjs-cloudflare deploy`
+3. Add the API key as a runtime secret: Worker → **Settings → Variables and Secrets → Add → Secret**, name `ANTHROPIC_API_KEY`. Or from a terminal: `npx wrangler secret put ANTHROPIC_API_KEY`. Build variables are not visible at runtime, so don't put it there. `EXTRACTOR_MODEL` is set in `wrangler.jsonc` under `vars`.
+
+Every push to the production branch then builds and deploys.
+
+Preview the production build locally in the Workers runtime (no Cloudflare login needed):
+
+```bash
+npm run preview          # builds, then serves on http://localhost:8787
+```
+
+To use the key in local preview, put `ANTHROPIC_API_KEY=...` in `.dev.vars` (git-ignored). `npm run deploy` deploys from your machine after `npx wrangler login`.

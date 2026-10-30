@@ -43,3 +43,10 @@ next-env.d.ts
 
 # local agent tooling (includes a copy of a third-party skill)
 .claude/
+
+# cloudflare / opennext
+/.open-next/
+/.wrangler/
+.dev.vars*
+!.dev.vars.example
+cloudflare-env.d.ts
