@@ -1,11 +1,11 @@
 {
-  "model": "NB+LR, hand x5 + rubric",
+  "model": "NB+LR, hand x5 + rubric, words seen 10+ times",
   "handPrompts": 207,
   "externalPrompts": 10951,
   "rubricPrompts": 10951,
-  "taskAccuracy": 0.792,
-  "taskAccuracyRealWorld": 0.668,
-  "taskAccuracySourceTags": 0.658,
-  "complexityExact": 0.353,
+  "taskAccuracy": 0.797,
+  "taskAccuracyRealWorld": 0.657,
+  "taskAccuracySourceTags": 0.65,
+  "complexityExact": 0.357,
   "complexityWithin1": 0.845
 }

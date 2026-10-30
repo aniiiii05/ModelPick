@@ -50,8 +50,12 @@ Offline models (5-fold CV on the rubric-labelled prompts):
 - With all 10,952: Naive Bayes 66%, logistic regression 64%, both averaged 66%. Shipped: both averaged,
   over words seen in at least 10 prompts (65.8% real, 80.2% hand-labelled, difficulty within one step 85%,
   242 KB compressed so it fits a Cloudflare Worker).
-- Linear classifiers on BGE-small and BGE-base sentence embeddings reached 66% (87% hand-labelled) on the
-  first 2,969 prompts; not yet re-run on the full set.
+- Linear classifiers on sentence embeddings (5-fold CV, same folds), all 10,952 prompts:
+  BGE-small 66.5% real / 84.5% hand-labelled; BGE-base 68.3% / 86.5%. On the first 2,969 prompts both
+  were about 66% / 87%. BGE-base is the best offline reader measured, 2.5 points over the shipped word
+  model on real prompts; using it at runtime would mean calling Cloudflare Workers AI on every request.
+- One prompt containing a pasted Mapbox access token was removed (10,951 kept); `scripts/credential_filter.py`
+  now drops any prompt matching a credential pattern at sampling, merge and dataset-build time.
 
 ## Model data (`../benchmarks.ts`, `../models.ts`, `../plans.ts`)
 
